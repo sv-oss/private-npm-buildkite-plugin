@@ -30,7 +30,9 @@ then
   exit 1
 fi
 
-echo '--- Setting up access for :no_entry_sign: :npm: :package:'
+echo '--- Setting up access for :no_entry_sign: :npm: :package: !!!'
+
+env
 
 OUTPUT_FILE="${SEEK_OSS_PRIVATE_NPM_OUTPUT_PATH}.npmrc"
 
