@@ -128,6 +128,21 @@ teardown() {
   assert_equal "$(head -n1 ./tests/path/to/project/.npmrc)" '//registry.npmjs.org/:_authToken=abc123'
 }
 
+@test "sets scope package registry" {
+  export BUILDKITE_PLUGIN_PRIVATE_NPM_TOKEN='abc123'
+  export BUILDKITE_PLUGIN_PRIVATE_NPM_SCOPE_PACKAGE_REGISTRIES_0_SCOPE=@company
+  export BUILDKITE_PLUGIN_PRIVATE_NPM_SCOPE_PACKAGE_REGISTRIES_0_REGISTRY=https://company.com
+  export BUILDKITE_PLUGIN_PRIVATE_NPM_SCOPE_PACKAGE_REGISTRIES_1_SCOPE=@other-company
+  export BUILDKITE_PLUGIN_PRIVATE_NPM_SCOPE_PACKAGE_REGISTRIES_1_REGISTRY=https://other-company.com
+
+  run $PWD/hooks/pre-command
+
+  assert_success
+  assert [ -e '.npmrc' ]
+  assert_equal "$(cat .npmrc | sed -n '3 p')" '@company:registry=https://company.com'
+  assert_equal "$(cat .npmrc | sed -n '4 p')" '@other-company:registry=https://other-company.com'
+}
+
 @test "the command fails if none of the fields are not set" {
   run $PWD/hooks/pre-command
 

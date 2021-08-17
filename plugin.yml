@@ -16,4 +16,12 @@ configuration:
       type: string
     output-path:
       type: string
-
+    scope-package-registries:
+      type: array
+      items:
+        type: object
+        properties:
+          scope:
+            type: string
+          registry:
+            type: string

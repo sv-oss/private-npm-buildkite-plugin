@@ -38,3 +38,11 @@ mkdir -p "${OUTPUT_FILE%/*}" && cat > $OUTPUT_FILE << EOF
 ${SEEK_OSS_PRIVATE_NPM_REGISTRY}:_authToken=${SEEK_OSS_PRIVATE_NPM_TOKEN}
 save-exact=true
 EOF
+
+while IFS='=' read -r name value ; do
+  if [[ $name =~ ^(BUILDKITE_PLUGIN_PRIVATE_NPM_SCOPE_PACKAGE_REGISTRIES_([0-9]+)_SCOPE)$ ]] ; then
+    itemVar=$(echo "${name}" | sed 's/_SCOPE$//')
+    registryEnvPath="${itemVar}_REGISTRY"
+    echo "$value:registry=${!registryEnvPath}" >> $OUTPUT_FILE
+  fi
+done < <(env | sort)
