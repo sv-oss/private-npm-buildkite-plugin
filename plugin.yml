@@ -5,6 +5,14 @@ public: true
 requirements:
   - bash
 configuration:
+  definitions:
+    scoped-registry:
+      type: object
+      properties:
+        scope:
+          type: string
+        registry:
+          type: string
   properties:
     registry:
       type: string
@@ -19,12 +27,7 @@ configuration:
     scope-package-registries:
       type: array
       items:
-        type: object
-        properties:
-          scope:
-            type: string
-          registry:
-            type: string
+        $ref: "#/definitions/scoped-registry"
   oneOf:
     - required:
         - file
