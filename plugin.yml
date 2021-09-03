@@ -25,3 +25,8 @@ configuration:
             type: string
           registry:
             type: string
+  oneOf:
+    - required:
+        - file
+    - required:
+        - env
